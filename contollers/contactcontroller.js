@@ -3,17 +3,17 @@ const Contact = require('../models/contact')
 
 async function  getContacts(ctx){
     try{
-        const {page, name, lastaname} =ctx.query
+        const {page, name, lastname} =ctx.query
         const options={
             page: page||1, 
             limit:10
                 }
         const query = {};
 
-        if (firstName || lastName) {
+        if (name || lastname) {
             query.$and = [];
-            firstName && query.$and.push({ firstName: new RegExp(firstName, 'i') });
-            lastName && query.$and.push({ lastName: new RegExp(lastName, 'i') });
+            name && query.$and.push({ name: new RegExp(name, 'i') });
+            lastname && query.$and.push({ lastname: new RegExp(lastname, 'i') });
         }
         const contact = await Contact.paginate(query,options)
         ctx.body = contact}
