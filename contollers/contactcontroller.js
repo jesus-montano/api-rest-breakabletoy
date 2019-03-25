@@ -1,6 +1,14 @@
 'use strict'
 const Contact = require('../models/contact')
+const validateEmail = function(email) {
+    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return re.test(email)
+};
 
+const validateName = function(name) {
+    var re = /^[a-z]+$/i;
+    return re.test(name)
+};
 async function  getContacts(ctx){
     try{
         const {page, name, lastname} =ctx.query
@@ -47,10 +55,13 @@ async function  postContact(ctx){
     
 }
 async function  putContact(ctx){
+    
     try{const id = ctx.params.contactId
+        if(validateName(ctx.request.body.name)&&(validateName(ctx.request.body.lastname)
+            &&validateEmail(ctx.request.body.email))){
     const contact = await Contact.findByIdAndUpdate(id, ctx.request.body)
    
-    ctx.body = contact
+    ctx.body = contact}
     }catch(err){
         console.log(err)
     }
